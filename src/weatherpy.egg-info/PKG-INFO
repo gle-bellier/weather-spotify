@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: weatherpy
+Version: 0.1.0
+Summary: Creating playlists linked to the weather
+Home-page: https://github.com/gle-bellier/weatherpy
+Author: LeBellier Georges
+Author-email: georges.lebellier@gmail.com
+Maintainer: LeBellier Georges
+Maintainer-email: georges.lebellier@gmail.com
+License: UNKNOWN
+Download-URL: https://github.com/gle-bellier/weatherpy
+Project-URL: Documentation, https://github.com/gle-bellier/weatherpy
+Project-URL: Source, https://github.com/gle-bellier/weatherpy
+Description: # denoising-diffusion
+Platform: UNKNOWN
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Natural Language :: French
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: notebook
+Provides-Extra: docs
+Provides-Extra: dev
