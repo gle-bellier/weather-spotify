@@ -42,6 +42,8 @@ class Playlist:
         self.metadata = pd.DataFrame(data=list_data,
                                      index=range(len(list_data)))
 
+        return self.metadata
+
     def get_means(self):
         """Computes the mean of each audio features in the playlist tracks set
 
