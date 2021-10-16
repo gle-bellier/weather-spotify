@@ -1,33 +1,36 @@
-import os
-from pprint import pprint
 import pandas as pd
-
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
-    from weatherpy.infos import SPOTIPY_REDIRECT_URL, SPOTIPY_CLIENT_SECRET, SPOTIPY_CLIENT_ID
-
-os.environ["SPOTIPY_CLIENT_ID"] = SPOTIPY_CLIENT_ID
-os.environ["SPOTIPY_CLIENT_SECRET"] = SPOTIPY_CLIENT_SECRET
-os.environ["SPOTIPY_REDIRECT_URI"] = "http://localhost:8000"
-scope = "user-library-read"
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 
 class Playlist:
-    def __init__(self, playlist_uri):
+    """Spotify Playlist class, aggregating metadata about the playlist's track
+    """
+    def __init__(self, API, playlist_uri):
+        """Creates the Spotify playlist
+
+        Args:
+            API (spotipy client): Spotipy client used for accessing the Spotify API
+            playlist_uri (str): Spotify uri of the desired playlist 
+        """
+
+        self.API = API
         self.playlist_uri = playlist_uri
         self.metadata = None
 
     def get_playlist_items(self):
-        results = sp.playlist(self.playlist_uri)
+        """Accesses the tracks of the playlist
+
+        Returns:
+            [dict]: Data about the playlist's tracks
+        """
+        results = self.API.playlist(self.playlist_uri)
         return results["tracks"]["items"]
 
     def get_metadata(self):
+        """Builds a dataframe with the audio features of the playlist's tracks
+        """
         items = self.get_playlist_items()
         uris = [item["track"]["uri"] for item in items]
-        names = [item["track"]["name"] for item in items]
-        features = sp.audio_features(uris)
+        features = self.API.audio_features(uris)
 
         list_data = []
 
@@ -39,7 +42,15 @@ class Playlist:
         self.metadata = pd.DataFrame(data=list_data,
                                      index=range(len(list_data)))
 
+    def get_means(self):
+        """Computes the mean of each audio features in the playlist tracks set
 
-pl = Playlist("066ZKIpH5hDMmDd5HnyuWr")
-pl.get_metadata()
-pprint(pl.metadata[["name", "valence"]])
+        Returns:
+            [pandas.DataFrame]: computed mean for each of the audio features
+        """
+        if self.metadata is None:
+            self.get_metadata()
+
+        # we want only the numerical features
+        df = self.metadata.select_dtypes(include=['int64', 'float64'])
+        return df.mean()
