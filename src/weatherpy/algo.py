@@ -18,18 +18,28 @@ scope = "user-library-read"
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 source = Playlist(sp, "63emxHLY69jlsRJ18UXCU8")
-playlist = Playlist(sp, "066ZKIpH5hDMmDd5HnyuWr")
+destination = Playlist(sp, "066ZKIpH5hDMmDd5HnyuWr")
 
-# df = source.get_metadata().select_dtypes(include=['int64', 'float64'])
-# print(df)
-# df = df.apply(lambda x: (x - x.min()) / (x.max() - x.min()), axis=0)
-# print(df)
-# # we get the mean of the whished features
-# m_features = source.get_means()[["valence", "loudness"]]
-# print(m_features.to_numpy())
+# collect tracks audio features (numerical ones)
+s_data = source.get_metadata()
+d_data = destination.get_metadata()
 
-S = np.random.random((20, 10))
-T = np.random.random((1, 10))
+s = s_data.select_dtypes(include=['int64', 'float64'])
+d = d_data.select_dtypes(include=['int64', 'float64'])
+
+# we normalize the source and the destination playlist audio features
+norm = lambda x: (x - x.min()) / (x.max() - x.min())
+s = s.apply(norm, axis=0)
+d = d.apply(norm, axis=0)
+
+print(s)
+# defining the features we want to take into account
+features = ["tempo", "acousticness", "liveness"]
+
+S = s[features]
+target = np.random.random((1, len(features)))
 
 print("_____________")
-print(get_subset_idx(S, T, 3))
+print(target)
+indexes = get_subset_idx(S, target, 3).squeeze()
+print(s_data.iloc[list(indexes)])
