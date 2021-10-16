@@ -1,4 +1,4 @@
-from infos import client_id, secret_key
+from weatherpy.infos import SPOTIPY_REDIRECT_URL, SPOTIPY_CLIENT_SECRET, SPOTIPY_CLIENT_ID
 import requests
 import base64
 import datetime
@@ -68,6 +68,6 @@ class SpotifyAPI(object):
         return r.json()
 
 
-API = SpotifyAPI(client_id, secret_key)
+API = SpotifyAPI(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET)
 print(API.search("Time", search_type="Track"))
 print(API.access_token)
