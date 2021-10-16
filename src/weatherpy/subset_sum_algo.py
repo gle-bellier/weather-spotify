@@ -19,4 +19,4 @@ def get_subset_idx(S, T, n_tracks):
         1, S.shape[1]
     ), "S and T shapes are not compatible (should be (N, m) and (1, m)"
     dist = np.linalg.norm(S - T, axis=1, keepdims=True)
-    return dist.argsort(axis=0)
+    return dist.argsort(axis=0)[:n_tracks]
