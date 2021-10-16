@@ -15,11 +15,8 @@ def get_subset_idx(S, T, n_tracks):
         int array: the n_tracks indexes of the tracks to include in the tracks subset
     """
     # compute the distance of each point to the target
+    assert T.shape == (
+        1, S.shape[1]
+    ), "S and T shapes are not compatible (should be (N, m) and (1, m)"
     dist = np.linalg.norm(S - T, axis=1, keepdims=True)
     return dist.argsort(axis=0)
-
-
-S = np.random.random(size=(10, 3))
-T = np.random.random(size=(1, 3))
-
-print(get_subset_idx(S, T, 3))
