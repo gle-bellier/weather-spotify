@@ -6,7 +6,12 @@ from weatherpy.playlist import Playlist
 from weatherpy.subset_sum_algo import get_subset_idx
 
 
-def get_weather_playlist(API, source_uri, destination_uri, target, features):
+def get_weather_playlist(API,
+                         source_uri,
+                         destination_uri,
+                         target,
+                         features,
+                         nb_tracks=5):
 
     source = Playlist(API, source_uri)
     destination = Playlist(API, destination_uri)
@@ -29,5 +34,5 @@ def get_weather_playlist(API, source_uri, destination_uri, target, features):
 
     # we only take into account the given features
     s = s[features]
-    indexes = get_subset_idx(s, target, 3).squeeze()
+    indexes = get_subset_idx(s, target, nb_tracks).squeeze()
     return s_data.iloc[list(indexes)]
